@@ -1,5 +1,10 @@
 require "happenings/version"
 
 module Happenings
-  # Your code goes here...
+  module Base
+
+    def run!
+      raise 'override me!'
+    end
+  end
 end
