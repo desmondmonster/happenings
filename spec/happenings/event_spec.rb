@@ -36,6 +36,11 @@ describe 'a happening event' do
         event.run!
         expect(event.message).to eq 'it worked'
       end
+
+      it 'publishes the event' do
+        Happenings.configuration.publisher.should_receive :publish
+        event.run!
+      end
     end
 
     context 'when the strategy is unsuccessful' do

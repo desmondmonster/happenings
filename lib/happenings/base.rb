@@ -34,6 +34,14 @@ module Happenings
       succeeded
     end
 
+    def payload
+      {}
+    end
+
+    def routing_key
+      [app_name, event_name, outcome].compact.join '.'
+    end
+
 
     private
 
@@ -41,22 +49,40 @@ module Happenings
       @succeeded = succeeded
       @message = options[:message]
       @reason = options[:reason]
+
+      publish if succeeded?
+    end
+
+    def app_name
+      Happenings.configuration.app_name
+    end
+
+    def event_name
+      self.class.to_s.split('::').last.downcase
+    end
+
+    def publish
+      Happenings.configuration.publisher.publish additional_info.merge(payload), properties
+    end
+
+    def properties
+      { message_id: SecureRandom.uuid,
+        routing_key: routing_key,
+        timestamp: Time.now.to_i }
+    end
+
+    def additional_info
+      { event: event_name, reason: reason, message: message, succeeded: succeeded }
     end
 
     def outcome
       succeeded? ? 'success' : 'failure'
     end
 
-    # def publish_event_to_exchange
-      # RabbitmqWrapper.publish_event additional_info.merge(payload), properties
-    # end
-
     def time
       initial_time = Time.now.to_f
       yield
       @elapsed_time = Time.now.to_f - initial_time
     end
-
-
   end
 end

@@ -7,7 +7,9 @@ module Happenings
     end
 
     def set_default_attributes
-      self.logger = Logger.new $stdout
+      self.logger = default_logger
+      self.publisher = default_publisher
+      self.app_name = nil
     end
 
     def method_missing method, *args
@@ -17,6 +19,23 @@ module Happenings
         self.send method, args.first
       else
         super
+      end
+    end
+
+
+    private
+
+    def default_logger
+      Logger.new $stdout
+    end
+
+    def default_publisher
+      NullPublisher
+    end
+
+    class NullPublisher
+      def self.publish payload, options
+        true
       end
     end
   end
