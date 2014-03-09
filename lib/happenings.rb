@@ -1,7 +1,7 @@
 
 require 'happenings/version'
 require_relative 'happenings/config'
-require_relative 'happenings/base'
+require_relative 'happenings/event'
 
 
 module Happenings

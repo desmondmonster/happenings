@@ -2,7 +2,7 @@ module Happenings
 
   class OutcomeError < StandardError; end
 
-  module Base
+  module Event
 
     attr_reader :elapsed_time, :message, :reason, :succeeded
 

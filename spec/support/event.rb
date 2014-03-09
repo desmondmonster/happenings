@@ -1,5 +1,5 @@
 class Event
-  include Happenings::Base
+  include Happenings::Event
 
   def strategy
   end
