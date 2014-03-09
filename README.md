@@ -16,7 +16,7 @@ Or install it yourself as:
 
     $ gem install happenings
 
-## Usage
+## Basic Usage
 
 Start by creating a Plain Old Ruby Object for your domain event and including a Happening Event.
 You'll want to declare an initialize method that sets up any needed variables.  Then, implement
@@ -61,7 +61,7 @@ end
 `#strategy` must return with `#success!` or `#failure!` or a `Happenings::OutcomeError` will
 be raised.
 
-## Success, failure
+## Success, Failure
 `#success!` and `#failure!` will set a `succeeded?` attribute and set optional keys for 
 `message` and `reason` attributes.  `message` is meant for human-readable messages, 
 such as "Password reset failed", whereas `reason` is designed for machine-sortable
@@ -69,8 +69,105 @@ filtering, such as "confirmation\_mismatch".  An `elapsed_time` attribute is als
 
 
 ## Publishing
-coming soon.
+Happenings makes it easy to disseminate your business events to interested parties, such as
+your analytics system, cache counters, or background workers.  Happenings will swallow the
+events by default, but it's recommended that you set a publisher in the configuration (see below).
+This publisher must respond to a `publish` method that accepts two arguments: the 
+payload and a hash of additional info.  This arrangement is geared towards a message broker like
+RabbitMQ, but you can certainly write your own wrapper for another messaging bus like Redis.
 
+Publishing happens automatically when `#success!` is called.  The following methods are important:
+
+`payload` - The main package of the event.  defaults to `{}`, but should
+be overridden in your event to include useful info such as the user id, changed attributes, etc.
+`routing_key` - The routable description of the event.  Defaults to `#{app_name}.#{event_name}`
+`event_name` - A machine-filterable version of the event.  Defaults to the class name.
+
+Here's an expanded version of our Reset Password example above that includes publishing features:
+
+```
+class MyEventPublisher
+  require 'bunny'
+
+  def initialize
+    @rabbitmq = Bunny.new
+    @rabbitmq.start
+    @rabbitmq_channel = @rabbitmq.create_channel
+    @events_exchange = @rabbitmq_channel.topic 'events', durable: true
+  end
+
+  def publish message, properties
+    @events_exchange.publish JSON.dump(message), properties
+  end
+end
+
+
+Happenings.configure do |config|
+  config.publisher = MyEventPublisher.new
+  config.app_name = 'my_app'
+end
+
+class ResetPasswordEvent
+  include Happenings::Event
+
+  attr_reader :user, :new_password, :new_password_confirmation
+
+  def initialize user, new_password, new_password_confirmation
+    @user = user
+    @new_password = new_password
+    @new_password_confirmation = new_password_confirmation
+  end
+
+  def strategy
+    passwords_match? and
+      success! message: 'Password reset successfully'
+  end
+
+  def payload
+    { user: { id: user.id } }
+  end
+
+
+  private
+
+  def passwords_match?
+    if new_password == new_password_confirmation
+      true
+    else
+      failure! message: 'Password must match confirmation'
+    end
+  end
+end
+```
+
+If the event is successful, `MyEventPublisher#publish` will receive the following parameters:
+```
+message.inspect # => { user: { id: 2 },
+                       event: 'resetpasswordevent',
+                       reason: nil,
+                       message: 'Password reset successfully',
+                       elapsed_time: 0.15,
+                       succeeded: true }
+
+properties.inspect # => { message_id: <SecureRandom.uuid>,
+                          routing_key: 'my_app.resetpasswordevent',
+                          timestamp: <Time.now.to_i> }
+```
+
+
+## Configuration
+You can change the Happenings configuration by passing a block to the `.configure` method.
+If you're using Happenings with Rails, a good place for this setup is in an
+initializer such as `config/initializers/happenings.rb`:
+
+```
+Happenings.configure do |config|
+  config.logger = your_logger
+  config.publisher = your_publisher
+  config.app_name = 'my awesome app'
+  config.socks = 'black socks'
+end
+```
 
 ## Contributing
 
