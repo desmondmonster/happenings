@@ -54,7 +54,7 @@ module Happenings
     end
 
     def app_name
-      Happenings.configuration.app_name
+      Happenings.config.app_name
     end
 
     def event_name
@@ -62,7 +62,7 @@ module Happenings
     end
 
     def publish
-      Happenings.configuration.publisher.publish additional_info.merge(payload), properties
+      Happenings.config.publisher.publish additional_info.merge(payload), properties
     end
 
     def properties

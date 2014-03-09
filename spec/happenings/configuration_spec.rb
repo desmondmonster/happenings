@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'configuration' do
+describe 'config' do
 
   context 'with default settings' do
     it 'uses the library defaults' do
-      expect(Happenings.configuration.logger).to be_a Logger
+      expect(Happenings.config.logger).to be_a Logger
     end
   end
 
@@ -18,14 +18,14 @@ describe 'configuration' do
         config.logger = FooLogger.new $stdout
       end
 
-      expect(Happenings.configuration.logger).to be_a FooLogger
+      expect(Happenings.config.logger).to be_a FooLogger
     end
   end
 
   context 'when random settings are specified' do
-    it 'stores them in the configuration' do
+    it 'stores them in the config' do
       Happenings.configure {|c| c.socks = 'pants'}
-      expect(Happenings.configuration.socks).to eq 'pants'
+      expect(Happenings.config.socks).to eq 'pants'
     end
   end
 end

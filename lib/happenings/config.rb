@@ -1,5 +1,5 @@
 module Happenings
-  class Configuration
+  class Config
     require 'logger'
 
     def initialize

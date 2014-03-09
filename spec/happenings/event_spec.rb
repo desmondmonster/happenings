@@ -38,7 +38,7 @@ describe 'a happening event' do
       end
 
       it 'publishes the event' do
-        Happenings.configuration.publisher.should_receive :publish
+        Happenings.config.publisher.should_receive :publish
         event.run!
       end
     end
