@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Basic Usage
 
-Start by creating a Plain Old Ruby Object for your domain event and including a Happening Event.
+Start by creating a Plain Old Ruby Object for your domain event and including the `Happening::Event` module.
 You'll want to declare an initialize method that sets up any needed variables.  Then, implement
 a `#strategy` method and add your business logic there.  This method will be called when your
 Happening Event is run.
@@ -120,7 +120,7 @@ class ResetPasswordEvent
 
   def strategy
     passwords_match? and
-      success! message: 'Password reset successfully'
+      reset_user_password!
   end
 
   def payload
@@ -129,6 +129,11 @@ class ResetPasswordEvent
 
 
   private
+
+  def reset_user_password!
+    user.reset_password! new_password
+    success! message: 'Password reset successfully'
+  end
 
   def passwords_match?
     if new_password == new_password_confirmation
