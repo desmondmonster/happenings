@@ -25,7 +25,7 @@ Happening Event is run.
 
 ```
 class ResetPasswordEvent
-  include Happening::Event
+  include Happenings::Event
 
   def initialize user, new_password, new_password_confirmation
     @user = user
@@ -58,7 +58,7 @@ end
 ```
 
 `#run!` will return Boolean `true` or `false` depending on the outcome of your strategy.
-`#strategy` must return with `#success!` or `#failure!` or a `Happening::OutcomeError` will
+`#strategy` must return with `#success!` or `#failure!` or a `Happenings::OutcomeError` will
 be raised.
 
 ## Success, failure
