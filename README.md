@@ -121,8 +121,8 @@ class ResetPasswordEvent
   end
 
   def strategy
-    passwords_match? and
-      reset_user_password!
+    ensure_passwords_match and
+      reset_user_password
   end
 
   def payload
@@ -132,17 +132,14 @@ class ResetPasswordEvent
 
   private
 
-  def reset_user_password!
+  def reset_user_password
     user.reset_password! new_password
     success! message: 'Password reset successfully'
   end
 
-  def passwords_match?
-    if new_password == new_password_confirmation
-      true
-    else
+  def ensure_passwords_match
+    new_password == new_password_confirmation or
       failure! message: 'Password must match confirmation'
-    end
   end
 end
 ```
