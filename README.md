@@ -78,10 +78,12 @@ RabbitMQ, but you can certainly write your own wrapper for another messaging bus
 
 Publishing happens automatically when `#success!` is called.  The following methods are important:
 
-`payload` - The main package of the event.  defaults to `{}`, but should
+`payload`: The main package of the event.  defaults to `{}`, but should
 be overridden in your event to include useful info such as the user id, changed attributes, etc.
-`routing_key` - The routable description of the event.  Defaults to `#{app_name}.#{event_name}`
-`event_name` - A machine-filterable version of the event.  Defaults to the class name.
+
+`routing_key`: The routable description of the event.  Defaults to `#{app_name}.#{event_name}`
+
+`event_name`: A machine-filterable version of the event.  Defaults to the class name.
 
 Here's an expanded version of our Reset Password example above that includes publishing features:
 
