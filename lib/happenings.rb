@@ -1,6 +1,7 @@
 
 require 'happenings/version'
 require_relative 'happenings/configuration'
+require_relative 'happenings/base'
 
 
 module Happenings
@@ -11,12 +12,5 @@ module Happenings
 
   def self.configuration
     @@configuration ||= Configuration.new
-  end
-
-  module Base
-
-    def run!
-      raise 'override me!'
-    end
   end
 end
