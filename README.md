@@ -76,7 +76,7 @@ This publisher must respond to a `publish` method that accepts two arguments: th
 payload and a hash of additional info.  This arrangement is geared towards a message broker like
 RabbitMQ, but you can certainly write your own wrapper for another messaging bus like Redis.
 
-Publishing happens automatically when `#success!` or `#failure!` is called.  The following methods are important:
+Publishing happens automatically when `#run!` is called, regardless of the strategy outcome.  The following methods are important:
 
 `payload`: The main package of the event.  defaults to `{}`, but should
 be overridden in your event to include useful info such as the user id, changed attributes, etc.
@@ -172,6 +172,10 @@ Happenings.configure do |config|
   config.socks = 'black socks'
 end
 ```
+
+## Requirements
+
+* ActiveSupport (>= 2.3)
 
 ## Contributing
 
