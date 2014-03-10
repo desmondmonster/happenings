@@ -83,7 +83,7 @@ be overridden in your event to include useful info such as the user id, changed 
 
 `routing_key`: The routable description of the event.  Defaults to `#{app_name}.#{event_name}.#{outcome}`, where outcome is either 'success' or 'failure'.
 
-`event_name`: A machine-filterable version of the event.  Defaults to the class name.
+`event_name`: A machine-filterable version of the event.  Defaults to the underscored class name.
 
 Here's an expanded version of our Reset Password example above that includes publishing features:
 
@@ -147,14 +147,14 @@ end
 If the event is successful, `MyEventPublisher#publish` will receive the following parameters:
 ```
 message.inspect # => { user: { id: 2 },
-                       event: 'resetpasswordevent',
+                       event: 'reset_password_event',
                        reason: nil,
                        message: 'Password reset successfully',
-                       elapsed_time: 0.15,
+                       elapsed_time: '0.0015',
                        succeeded: true }
 
 properties.inspect # => { message_id: <SecureRandom.uuid>,
-                          routing_key: 'my_app.resetpasswordevent.success',
+                          routing_key: 'my_app.reset_password_event.success',
                           timestamp: <Time.now.to_i> }
 ```
 

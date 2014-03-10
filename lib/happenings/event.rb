@@ -4,6 +4,8 @@ module Happenings
 
   module Event
 
+    require 'active_support/inflector'
+
     attr_reader :elapsed_time, :message, :reason, :succeeded
 
     def run!
@@ -56,11 +58,11 @@ module Happenings
     end
 
     def app_name
-      Happenings.config.app_name
+      Happenings.config.app_name && Happenings.config.app_name.gsub(' ', '').underscore
     end
 
     def event_name
-      self.class.to_s.split('::').last.downcase
+      self.class.to_s.split('::').last.underscore
     end
 
     def publish
