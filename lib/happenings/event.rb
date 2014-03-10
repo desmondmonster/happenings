@@ -17,6 +17,8 @@ module Happenings
         raise OutcomeError.new 'no outcome specified'
       end
 
+      publish
+
       succeeded?
     end
 
@@ -51,10 +53,6 @@ module Happenings
       @succeeded = succeeded
       @message = options[:message]
       @reason = options[:reason]
-
-      publish
-
-      succeeded
     end
 
     def app_name
@@ -79,11 +77,16 @@ module Happenings
       { event: event_name,
         reason: reason,
         message: message,
-        succeeded: succeeded }
+        succeeded: succeeded,
+        elapsed_time: formatted_elapsed_time }
     end
 
     def outcome
       succeeded? ? 'success' : 'failure'
+    end
+
+    def formatted_elapsed_time
+      "%.6f" % @elapsed_time
     end
 
     def time
