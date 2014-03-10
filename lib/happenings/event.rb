@@ -39,7 +39,7 @@ module Happenings
     end
 
     def routing_key
-      [app_name, event_name].compact.join '.'
+      [app_name, event_name, outcome].compact.join '.'
     end
 
 
@@ -50,7 +50,7 @@ module Happenings
       @message = options[:message]
       @reason = options[:reason]
 
-      publish if succeeded?
+      publish
 
       succeeded
     end
@@ -74,7 +74,10 @@ module Happenings
     end
 
     def additional_info
-      { event: event_name, reason: reason, message: message, succeeded: succeeded }
+      { event: event_name,
+        reason: reason,
+        message: message,
+        succeeded: succeeded }
     end
 
     def outcome

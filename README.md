@@ -76,12 +76,12 @@ This publisher must respond to a `publish` method that accepts two arguments: th
 payload and a hash of additional info.  This arrangement is geared towards a message broker like
 RabbitMQ, but you can certainly write your own wrapper for another messaging bus like Redis.
 
-Publishing happens automatically when `#success!` is called.  The following methods are important:
+Publishing happens automatically when `#success!` or `#failure!` is called.  The following methods are important:
 
 `payload`: The main package of the event.  defaults to `{}`, but should
 be overridden in your event to include useful info such as the user id, changed attributes, etc.
 
-`routing_key`: The routable description of the event.  Defaults to `#{app_name}.#{event_name}`
+`routing_key`: The routable description of the event.  Defaults to `#{app_name}.#{event_name}.#{outcome}`, where outcome is either 'success' or 'failure'.
 
 `event_name`: A machine-filterable version of the event.  Defaults to the class name.
 
@@ -154,7 +154,7 @@ message.inspect # => { user: { id: 2 },
                        succeeded: true }
 
 properties.inspect # => { message_id: <SecureRandom.uuid>,
-                          routing_key: 'my_app.resetpasswordevent',
+                          routing_key: 'my_app.resetpasswordevent.success',
                           timestamp: <Time.now.to_i> }
 ```
 
