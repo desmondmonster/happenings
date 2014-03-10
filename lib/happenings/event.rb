@@ -6,7 +6,7 @@ module Happenings
 
     require 'active_support/inflector'
 
-    attr_reader :elapsed_time, :message, :reason, :succeeded
+    attr_reader :duration, :message, :reason, :succeeded
 
     def run!
       time do
@@ -78,21 +78,21 @@ module Happenings
         reason: reason,
         message: message,
         succeeded: succeeded,
-        elapsed_time: formatted_elapsed_time }
+        duration: formatted_duration }
     end
 
     def outcome
       succeeded? ? 'success' : 'failure'
     end
 
-    def formatted_elapsed_time
-      "%.6f" % @elapsed_time
+    def formatted_duration
+      "%.6f" % @duration
     end
 
     def time
       initial_time = Time.now.to_f
       yield
-      @elapsed_time = Time.now.to_f - initial_time
+      @duration = Time.now.to_f - initial_time
     end
   end
 end

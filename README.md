@@ -65,7 +65,7 @@ be raised.
 `#success!` and `#failure!` will set a `succeeded?` attribute and set optional keys for 
 `message` and `reason` attributes.  `message` is meant for human-readable messages, 
 such as "Password reset failed", whereas `reason` is designed for machine-sortable
-filtering, such as "confirmation\_mismatch".  An `elapsed_time` attribute is also recorded.
+filtering, such as "confirmation\_mismatch".  A `duration` attribute is also recorded.
 
 
 ## Publishing
@@ -150,7 +150,7 @@ message.inspect # => { user: { id: 2 },
                        event: 'reset_password_event',
                        reason: nil,
                        message: 'Password reset successfully',
-                       elapsed_time: '0.0015',
+                       duration: '0.0015',
                        succeeded: true }
 
 properties.inspect # => { message_id: <SecureRandom.uuid>,

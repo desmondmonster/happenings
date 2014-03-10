@@ -27,9 +27,9 @@ describe 'a happening event' do
         expect(event).to be_succeeded
       end
 
-      it 'records the elapsed time of the run' do
+      it 'records the duration of the run' do
         event.run!
-        expect(event.elapsed_time).to be > 0.0
+        expect(event.duration).to be > 0.0
       end
 
       it 'sets the message' do
@@ -57,9 +57,9 @@ describe 'a happening event' do
         expect(event).not_to be_succeeded
       end
 
-      it 'records the elapsed time of the run' do
+      it 'records the duration of the run' do
         event.run!
-        expect(event.elapsed_time).to be > 0.0
+        expect(event.duration).to be > 0.0
       end
 
       it 'sets the message' do
@@ -94,7 +94,7 @@ describe 'a happening event' do
 
       it 'publishes the event' do
         Happenings.config.publisher.should_receive(:publish)
-          .with(hash_including(:elapsed_time, payload), hash_including(:message_id, :timestamp, properties))
+          .with(hash_including(:duration, payload), hash_including(:message_id, :timestamp, properties))
 
         ResetPasswordEvent.new(user, password, confirmation).run!
       end
@@ -108,7 +108,7 @@ describe 'a happening event' do
 
       it 'publishes the event' do
         Happenings.config.publisher.should_receive(:publish)
-          .with(hash_including(:elapsed_time, payload), hash_including(:message_id, :timestamp, properties))
+          .with(hash_including(:duration, payload), hash_including(:message_id, :timestamp, properties))
 
         ResetPasswordEvent.new(user, password, confirmation).run!
       end
