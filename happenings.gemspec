@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["desmondbowe@gmail.com"]
   spec.summary       = %q{Event-Driven Domain Scaffold}
   spec.description   = %q{For use in applications where business domain events are first-class citizens}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/desmondmonster/happenings"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
