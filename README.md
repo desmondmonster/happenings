@@ -84,7 +84,8 @@ be overridden in your event to include useful info such as the user id, changed 
 You can override this to use your own routing scheme, but you'll probably just want to augment it by
 calling `"#{super}.my.details.here"`.
 
-`event_name`: A machine-filterable version of the event.  Defaults to the underscored class name.
+`event_name`: A machine-filterable version of the event.  Defaults to the underscored class name.  Override
+this to use your own naming scheme.
 
 Here's an expanded version of our Reset Password example above that includes publishing features:
 

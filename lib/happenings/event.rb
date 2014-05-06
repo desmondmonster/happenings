@@ -54,7 +54,7 @@ module Happenings
     end
 
     def event_name
-      self.class.to_s.split('::').last.underscore
+      self.class.to_s.underscore
     end
 
     def publish
