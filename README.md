@@ -21,7 +21,8 @@ Or install it yourself as:
 Start by creating a Plain Old Ruby Object for your domain event and including the `Happening::Event` module.
 You'll want to declare an initialize method that sets up any needed variables.  Then, implement
 a `#strategy` method and add your business logic there.  This method will be called when your
-Happening Event is run.
+Happening Event is run and returns a generic success by default.  `#strategy` must return with
+`#success!` or `#failure!` or a `Happenings::OutcomeError` will be raised.
 
 ```
 class ResetPasswordEvent
@@ -58,8 +59,6 @@ end
 ```
 
 `#run!` will return Boolean `true` or `false` depending on the outcome of your strategy.
-`#strategy` must return with `#success!` or `#failure!` or a `Happenings::OutcomeError` will
-be raised.
 
 ## Success, Failure
 `#success!` and `#failure!` will set a `succeeded?` attribute and set optional keys for 
@@ -82,6 +81,8 @@ Publishing happens automatically when `#run!` is called, regardless of the strat
 be overridden in your event to include useful info such as the user id, changed attributes, etc.
 
 `routing_key`: The routable description of the event.  Defaults to `#{event_name}.#{outcome}`, where outcome is either 'success' or 'failure'.
+You can override this to use your own routing scheme, but you'll probably just want to augment it by
+calling `"#{super}.my.details.here"`.
 
 `event_name`: A machine-filterable version of the event.  Defaults to the underscored class name.
 
