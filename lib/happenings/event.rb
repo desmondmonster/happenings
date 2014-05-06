@@ -43,7 +43,7 @@ module Happenings
     end
 
     def routing_key
-      [app_name, event_name, outcome].compact.join '.'
+      [event_name, outcome].compact.join '.'
     end
 
 
@@ -53,10 +53,6 @@ module Happenings
       @succeeded = succeeded
       @message = options[:message]
       @reason = options[:reason]
-    end
-
-    def app_name
-      Happenings.config.app_name && Happenings.config.app_name.gsub(' ', '').underscore
     end
 
     def event_name

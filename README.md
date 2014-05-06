@@ -81,7 +81,7 @@ Publishing happens automatically when `#run!` is called, regardless of the strat
 `payload`: The main package of the event.  defaults to `{}`, but should
 be overridden in your event to include useful info such as the user id, changed attributes, etc.
 
-`routing_key`: The routable description of the event.  Defaults to `#{app_name}.#{event_name}.#{outcome}`, where outcome is either 'success' or 'failure'.
+`routing_key`: The routable description of the event.  Defaults to `#{event_name}.#{outcome}`, where outcome is either 'success' or 'failure'.
 
 `event_name`: A machine-filterable version of the event.  Defaults to the underscored class name.
 
@@ -106,7 +106,6 @@ end
 
 Happenings.configure do |config|
   config.publisher = MyEventPublisher.new
-  config.app_name = 'my_app'
 end
 
 class ResetPasswordEvent
@@ -154,7 +153,7 @@ message.inspect # => { user: { id: 2 },
                        succeeded: true }
 
 properties.inspect # => { message_id: <SecureRandom.uuid>,
-                          routing_key: 'my_app.reset_password_event.success',
+                          routing_key: 'reset_password_event.success',
                           timestamp: <Time.now.to_i> }
 ```
 
@@ -168,7 +167,6 @@ initializer such as `config/initializers/happenings.rb`:
 Happenings.configure do |config|
   config.logger = your_logger
   config.publisher = your_publisher
-  config.app_name = 'my awesome app'
   config.socks = 'black socks'
 end
 ```

@@ -9,7 +9,6 @@ module Happenings
     def set_default_attributes
       self.logger = default_logger
       self.publisher = default_publisher
-      self.app_name = nil
     end
 
     def method_missing method, *args
