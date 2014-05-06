@@ -13,9 +13,7 @@ module Happenings
         strategy
       end
 
-      if succeeded.nil?
-        raise OutcomeError.new 'no outcome specified'
-      end
+      raise OutcomeError.new 'no outcome specified' if no_outcome_specified?
 
       publish
 
@@ -79,6 +77,10 @@ module Happenings
 
     def outcome
       succeeded? ? 'success' : 'failure'
+    end
+
+    def no_outcome_specified?
+      succeeded.nil?
     end
 
     def formatted_duration
