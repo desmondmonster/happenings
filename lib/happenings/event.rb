@@ -13,7 +13,7 @@ module Happenings
         strategy
       end
 
-      raise OutcomeError.new 'no outcome specified' if no_outcome_specified?
+      raise OutcomeError.new "no outcome specified for #{event_name}" if no_outcome_specified?
 
       publish
 
