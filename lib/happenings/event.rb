@@ -3,6 +3,15 @@ module Happenings
   class OutcomeError < StandardError; end
 
   module Event
+    module ClassMethods
+      def self.run! *args
+        new(*args).tap &:run!
+      end
+    end
+
+    def self.included base
+      base.extend ClassMethods
+    end
 
     require 'active_support/inflector'
 
