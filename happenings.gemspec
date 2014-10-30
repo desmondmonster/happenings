@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "happenings"
   spec.version       = Happenings::VERSION
   spec.authors       = ["Desmond Bowe"]
-  spec.email         = ["desmondbowe@gmail.com"]
+  spec.email         = ["desmond@crevalle.io"]
   spec.summary       = %q{Event-Driven Domain Scaffold}
   spec.description   = %q{For use in applications where business domain events are first-class citizens}
   spec.homepage      = "https://github.com/desmondmonster/happenings"
