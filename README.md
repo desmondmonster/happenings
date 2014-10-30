@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Basic Usage
 
-Start by creating a Plain Old Ruby Object for your domain event and including the `Happening::Event` module.
+Start by creating a Plain Old Ruby Object for your domain event and including the `Happenings::Event` module.
 You'll want to declare an initialize method that sets up any needed variables.  Then, implement
 a `#strategy` method and add your business logic there.  This method will be called when your
 Happening Event is run and returns a generic success by default.  `#strategy` must return with
@@ -61,7 +61,7 @@ end
 `#run!` will return Boolean `true` or `false` depending on the outcome of your strategy.
 
 ## Success, Failure
-`#success!` and `#failure!` will set a `succeeded?` attribute and set optional keys for 
+`#success!` and `#failure!` will set a `succeeded?` attribute and optional keys for 
 `message` and `reason` attributes.  `message` is meant for human-readable messages, 
 such as "Password reset failed", whereas `reason` is designed for machine-sortable
 filtering, such as "confirmation\_mismatch".  A `duration` attribute is also recorded.
@@ -84,7 +84,7 @@ be overridden in your event to include useful info such as the user id, changed 
 You can override this to use your own routing scheme, but you'll probably just want to augment it by
 calling `"#{super}.my.details.here"`.
 
-`event_name`: A machine-filterable version of the event.  Defaults to the underscored class name.  Override
+`event_name`: A machine-filterable version of the event.  Defaults to the event's class name.  Override
 this to use your own naming scheme.
 
 Here's an expanded version of our Reset Password example above that includes publishing features:
@@ -148,14 +148,14 @@ end
 If the event is successful, `MyEventPublisher#publish` will receive the following parameters:
 ```
 message.inspect # => { user: { id: 2 },
-                       event: 'reset_password_event',
+                       event: 'ResetPasswordEvent',
                        reason: nil,
                        message: 'Password reset successfully',
                        duration: '0.0015',
                        succeeded: true }
 
 properties.inspect # => { message_id: <SecureRandom.uuid>,
-                          routing_key: 'reset_password_event.success',
+                          routing_key: 'ResetPasswordEvent.success',
                           timestamp: <Time.now.to_i> }
 ```
 
@@ -172,10 +172,6 @@ Happenings.configure do |config|
   config.socks = 'black socks'
 end
 ```
-
-## Requirements
-
-* ActiveSupport (>= 2.3)
 
 ## Contributing
 

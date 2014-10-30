@@ -13,8 +13,6 @@ module Happenings
       base.extend ClassMethods
     end
 
-    require 'active_support/inflector'
-
     attr_reader :duration, :message, :reason, :succeeded
 
     def run!
@@ -63,7 +61,7 @@ module Happenings
     end
 
     def event_name
-      self.class.to_s.underscore
+      self.class.to_s
     end
 
     def publish
