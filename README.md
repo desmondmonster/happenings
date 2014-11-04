@@ -45,7 +45,7 @@ class ResetPasswordEvent
 end
 ```
 
-Run the event using the `#run` method as follows:
+Run the event using the `#run!` method as follows:
 
 ```
 event = ResetPasswordEvent.new(user, 'secret_password', 'secret_password')
@@ -58,7 +58,40 @@ else
 end
 ```
 
-`#run!` will return Boolean `true` or `false` depending on the outcome of your strategy.
+`#run!` will return Boolean `true` or `false` depending on the outcome of your strategy.  If you don't care about the outcome, you can use
+the class method `.run!`, which takes the same arguments as `#new` runs the event, and returns the event.  This is useful if you don't expect
+the event to fail or you want to handle errors some other way:
+
+```
+class AuthenticateUser
+  include Happenings::Event
+
+  attr_reader :user
+
+  def initialize auth_token
+    @auth_token = auth_token
+  end
+
+  def run!
+    if (@user = User.find_by_auth_token @auth_token)
+      success!
+    else
+      failure! message: 'No user found'
+    end
+  end
+end
+
+class MyController
+  def authenticate_user
+    set_current_user or
+      render status: 401, json: { 'you must be signed in to do that' } and return
+  end
+
+  def set_current_user
+    @current_user = AuthenticateUser.run!(params[:auth_token]).user
+  end
+end
+```
 
 ## Success, Failure
 `#success!` and `#failure!` will set a `succeeded?` attribute and optional keys for 
