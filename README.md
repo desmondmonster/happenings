@@ -191,6 +191,14 @@ properties.inspect # => { message_id: <SecureRandom.uuid>,
                           routing_key: 'ResetPasswordEvent.success',
                           timestamp: <Time.now.to_i> }
 ```
+## Generating event templates
+
+If you're using Rails, there's a convenient generator that will make a skeleton event file for you. Running
+```
+$ rails g happenings:event reset_password
+```
+will create `lib/events/reset_password.rb` with some basic event methods.  You can change where these files
+are created by setting `Happenings.config.event_location = 'path/to/your/events'`
 
 
 ## Configuration
@@ -200,9 +208,11 @@ initializer such as `config/initializers/happenings.rb`:
 
 ```
 Happenings.configure do |config|
-  config.logger = your_logger
-  config.publisher = your_publisher
-  config.socks = 'black socks'
+  config.logger = your_logger # defaults to $stdout
+  config.publisher = your_publisher # defaults to a NullPublisher
+  config.socks = 'black socks' # add your own, be sure not to misspell a config!
+  config.base_event_class = 'some_event_class' # for the generator, defaults to BasicEvent
+  config.event_location = 'app/events' # where the generator stores the new files.  Defaults to 'lib/events'
 end
 ```
 

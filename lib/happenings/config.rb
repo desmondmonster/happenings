@@ -9,6 +9,8 @@ module Happenings
     def set_default_attributes
       self.logger = default_logger
       self.publisher = default_publisher
+      self.event_location = 'lib/events'
+      self.base_event_class = 'BasicEvent'
     end
 
     def method_missing method, *args
