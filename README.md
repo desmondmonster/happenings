@@ -72,7 +72,7 @@ class AuthenticateUser
     @auth_token = auth_token
   end
 
-  def run!
+  def strategy
     if (@user = User.find_by_auth_token @auth_token)
       success!
     else
