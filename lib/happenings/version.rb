@@ -1,5 +1,5 @@
 module Happenings
-  VERSION = [1, 0, 0]
+  VERSION = [1, 1, 1]
 
   class << VERSION
     include Comparable
