@@ -4,7 +4,7 @@ module Happenings
 
   module Event
     module ClassMethods
-      def self.run! *args
+      def run! *args
         new(*args).tap &:run!
       end
     end
