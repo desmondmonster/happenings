@@ -1,5 +1,6 @@
 
 require 'bundler/setup'
+require 'securerandom'
 Bundler.require(:default, :development)
 
 
