@@ -47,7 +47,7 @@ describe 'a happening event' do
       before do
         class Event
           def strategy
-            failure! message: 'it did not work'
+            failure! message: 'it did not work', reason: :you_broke_it
           end
         end
       end
