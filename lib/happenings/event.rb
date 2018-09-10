@@ -58,6 +58,7 @@ module Happenings
       @succeeded = succeeded
       @message = options[:message]
       @reason = options[:reason]
+      succeeded
     end
 
     def event_name
